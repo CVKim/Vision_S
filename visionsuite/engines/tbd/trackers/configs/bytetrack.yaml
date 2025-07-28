@@ -1,0 +1,18 @@
+post:
+  min_box_area: 100
+  aspect_ratio: 1.6
+
+tracker:
+  type: BYTETracker
+  track_thresh: 0.2
+  track_buffer: 30
+  match_thresh: 0.8
+  mot20: False 
+
+  
+detector:
+  model_name: 'yolo11n.pt'
+  confidence: 0.3
+  iou: 0.5
+  width: 1920
+  height: 1080

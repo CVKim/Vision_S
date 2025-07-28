@@ -1,0 +1,44 @@
+archive:
+  output_dir: /HDD/datasets/projects/LX/24.11.28_2/datasets_wo_vertical/outputs/torch
+  
+dataset:
+  input_dir: /HDD/datasets/projects/LX/24.11.28_2/datasets_wo_vertical/datasets/split_mask_patch_dataset
+  type: MaskDatasetWrapper 
+  case_sensitive: true 
+  classes:
+    - background
+    - TIMBER
+    - SCREW
+
+  train: 
+    type: MaskDataset
+    case_sensitive: true
+    image_formats: ['jpg']
+    mask_format: 'jpg'
+    transform:
+      use_v2: false
+      backend: PIL
+      test_only: false
+      weights: null
+      resize:
+        width: 512
+        height: 512
+      normalize:
+        type: imagenet
+
+  val: 
+    type: MaskDataset
+    case_sensitive: true
+    image_formats: ['jpg']
+    mask_format: 'jpg'
+    transform:
+      use_v2: false
+      backend: PIL
+      test_only: false
+      weights: null
+      resize:
+        width: 512
+        height: 512
+      normalize: 
+        type: imagenet
+

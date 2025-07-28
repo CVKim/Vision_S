@@ -1,0 +1,170 @@
+optimizer:
+  type: SGD
+  case_sensitive: true
+  lr: 0.1
+  momentum: 0.9
+  weight_decay: 0.0001
+  
+
+scheduler:
+  type: PolynomialLR
+  case_sensitive: true
+  power: 0.9
+
+  warmup_scheduler:
+    type: LinearLR
+    case_sensitive: true
+    total_iters: 0
+    factor: 0.01
+    integrate_scheduler: 
+      type: SequentialLR
+      case_sensitive: true
+
+loss:
+  type: LossWithAux
+  case_sensitive: true
+  loss_name: CrossEntropyLoss
+  label_smoothing: 0.0
+  ignore_index: 255
+
+loop:
+  type: EpochBasedLoop
+  case_sensitive: true
+
+dataloader:
+  type: TorchDataloader
+  case_sensitive: true
+  drop_last: true
+  pin_memory: true
+
+  train:
+    batch_size: 4
+    num_workers: 16
+    vis: 
+      use: false
+      sampling_ratio: 0.05
+      resize_ratio: 0.5
+      grid_rows: 2
+      grid_cols: 2
+      filename_h: 50
+
+  val:
+    batch_size: 1
+    num_workers: 8
+    vis: 
+      use: false
+      sampling_ratio: 0.05
+      resize_ratio: 0.5
+      filename_h: 50
+      grid_rows: 2
+      grid_cols: 2
+
+  test:
+    batch_size: 1
+    num_workers: 0
+    vis: 
+      use: false
+      sampling_ratio: 0.2
+      resize_ratio: 0.5
+      filename_h: 50
+      grid_rows: 2
+      grid_cols: 2
+
+model: 
+  type: TorchvisionModel
+  case_sensitive: true
+  model_name: deeplabv3_resnet50
+  # model_name: deeplabv3_efficientnetb3
+  aux_loss: true
+  weights: null
+  weights_backbone: ResNet50_Weights.IMAGENET1K_V1
+  # weights_backbone: EfficientNet_B3_Weights.IMAGENET1K_V1
+
+augment: 
+  train:
+    backend: PIL
+    use_v2: False
+  val:
+    backend: PIL
+    use_v2: False
+  test:
+    backend: PIL
+    use_v2: False
+
+train:
+  trainer:
+    type: BaseTrainer
+    case_sensitive: true
+  device_ids: 0,1
+  device: cuda
+  use_deterministic_algorithms: False
+  sync_bn: true
+  epochs: 200
+  print_freq: 10
+  resume: False
+  start_epoch: 0
+
+  amp: False
+
+val:
+  validator:
+    type: BaseValidator
+    case_sensitive: true
+  epoch: 1
+
+test: 
+  tester:
+    type: BaseTester
+    case_sensitive: true 
+  device_ids: 0,1,2,3
+  device: cuda
+  use_deterministic_algorithms: false
+  sync_bn: true
+  print_freq: 10
+
+  output_dir: null
+  seed_model: /HDD/_projects/benchmark/semantic_segmentation/new_model/outputs/torch/2024_11_16_10_51_57/train/weights/model_190.pth
+
+  dataset: 
+    input_dir: /HDD/_projects/benchmark/semantic_segmentation/new_model/datasets/sungwoo_bottom/split_patch_mask_dataset/val
+    type: MaskDataset 
+    case_sensitive: true 
+
+  loop:
+    type: TestLoop
+    case_sensitive: true
+
+resume: 
+  use: false
+  seed_model: /HDD/_projects/benchmark/semantic_segmentation/new_model/outputs/torch/2024_11_12_18_46_21/weights/last.pth
+  optimizer: true 
+  lr_scheduler: true 
+  epoch: true 
+  scaler: true
+
+distributed:
+  world_size: 1
+  dist_url: env://
+
+archive:
+  output_dir: /HDD/_projects/benchmark/semantic_segmentation/new_model/outputs/torch
+
+  model:
+    save_last: true 
+    save_best: 
+      loss: true 
+      acc: true
+    save_freq_epoch: 10
+
+  monitor:
+    use: true
+    save_freq_epoch: 10
+
+  val:
+    save_freq_epoch: 10
+
+logger:
+  log_stream_level: DEBUG
+  log_file_level: DEBUG
+
+

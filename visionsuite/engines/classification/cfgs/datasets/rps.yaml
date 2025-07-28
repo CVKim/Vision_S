@@ -1,0 +1,6 @@
+dataset:
+  type: DirectoryDataset
+  input_dir: /HDD/_projects/benchmark/classification/rps/datasets/split_dataset
+
+archive: 
+  output_dir: /HDD/_projects/benchmark/classification/rps/outputs

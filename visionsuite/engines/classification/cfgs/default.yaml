@@ -1,0 +1,138 @@
+dataset:
+  type: DirectoryDataset 
+  case_sensitive: true
+  cache_dataset: false # TODO
+  load_dataset: 
+    type: image_folder
+    case_sensitive: false
+  sampler: 
+    type: RASampler
+    case_sensitive: true
+    reps: 4
+
+model:
+  type: TorchvisionModel
+  case_sensitive: true
+  model_name: 'resnet'
+  backbone: '101'
+  weights: IMAGENET1K_V2
+  ema: 
+    use: false
+    steps: 32
+    decay: 0.99998
+
+loop:
+  type: EpochBasedLoop
+  case_sensitive: true
+
+dataloader:
+  type: torch_dataloader
+  case_sensitive: false
+
+  train:
+    batch_size: 4
+    workers: 16
+
+  val:
+    batch_size: 4
+    workers: 16
+  
+loss:
+  type: CrossEntropyLoss
+  case_sensitive: true
+  label_smoothing: 0.0
+
+optimizer:
+  type: SGD
+  case_sensitive: true
+  lr: 0.1
+  momentum: 0.9
+  weight_decay: 0.0001
+  
+  norm_weight_decay: null
+  bias_weight_decay: null
+  transformer_embedding_decay: null
+
+scheduler:
+  type: StepLR
+  case_sensitive: true
+  step_size: 30
+  gamma: 0.1
+  eta_min: 0.0
+
+  warmup_scheduler:
+    type: ConstantLR
+    case_sensitive: true
+    total_iters: 1
+    factor: 0.01
+    integrate_scheduler: 
+      type: SequentialLR
+      case_sensitive: true
+
+resume: 
+  use: false
+
+train:
+  trainer:
+    type: BaseTrainer
+    case_sensitive: true
+  ckpt: null
+  device: "cuda"
+  device_ids: 0
+  epochs: 90
+
+  sync_bn: true
+  amp: true
+  use_deterministic_algorithms: false
+  clip_grad_norm: 1.0
+  print_freq: 10
+  topk: 3
+
+val:
+  validator:
+    type: BaseValidator
+    case_sensitive: true
+  epoch: 1
+
+distributed:
+  world_size: 1
+  dist_url: "env://"
+
+augment:
+  train:
+    mixup_cutmix: 
+      mixup_alpha: 0.0
+      cutmix_alpha: 0.0
+      use_v2: false # Use V2 transforms
+
+    # val_resize_size: 256
+    # val_crop_size: 224
+    # train_crop_size: 224
+    # interpolation: "bilinear"
+
+    # auto_augment: null
+    # ra_magnitude: 9
+    # augmix_severity: 3
+    # random_erase: 0.0
+
+    # backend: PIL
+  val:
+
+archive:
+  model:
+    save_last: true 
+    save_best: 
+      loss: true 
+      acc: true
+    save_freq_epoch: 10
+
+  monitor:
+    use: true
+    save_freq_epoch: 10
+
+  val:
+    save_freq_epoch: 10
+
+logger:
+  log_stream_level: INFO
+  log_file_level: INFO

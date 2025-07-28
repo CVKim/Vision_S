@@ -1,0 +1,41 @@
+archive:
+  output_dir: /HDD/_projects/benchmark/semantic_segmentation/loss_fn/recipes/torch
+
+dataset:
+  input_dir: /HDD/_projects/benchmark/semantic_segmentation/loss_fn/datasets/mask_dataset/split_mask_dataset
+  type: MaskDatasetWrapper
+  case_sensitive: true
+  classes: ['background', 'STABBED_C', 'SCRATCH', 'STABBED', 'STABBED_P']
+
+  train: 
+    type: MaskDataset
+    case_sensitive: true
+    image_formats: ['bmp']
+    mask_format: 'bmp'
+    transform:
+      use_v2: false
+      backend: PIL
+      test_only: false
+      weights: null
+      resize:
+        width: 512
+        height: 512
+      normalize:
+        type: imagenet
+
+  val: 
+    type: MaskDataset
+    case_sensitive: true
+    image_formats: ['bmp']
+    mask_format: 'bmp'
+    transform:
+      use_v2: false
+      backend: PIL
+      test_only: false
+      weights: null
+      resize:
+        width: 512
+        height: 512
+      normalize: 
+        type: imagenet
+

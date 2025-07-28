@@ -1,0 +1,6 @@
+dataset:
+  input_dir: /HDD/datasets/public/coco
+  type: COCODataset
+  case_sensitive: true
+
+  
