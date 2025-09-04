@@ -14,6 +14,8 @@ class STrack(BaseTrack):
         self.mean, self.covariance = None, None
         self.is_activated = False
 
+        self.last_detection_tlwh = np.asarray(tlwh, dtype=float)
+
         self.score = score
         self.tracklet_len = 0
 
@@ -78,7 +80,8 @@ class STrack(BaseTrack):
             self.mean, self.covariance, self.tlwh_to_xyah(new_tlwh))
         self.state = TrackState.Tracked
         self.is_activated = True
-
+        self.last_detection_tlwh = new_track.tlwh 
+        
         self.score = new_track.score
 
     @property

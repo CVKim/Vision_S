@@ -1,18 +1,20 @@
 post:
   min_box_area: 100
-  aspect_ratio: 1.6
+  # aspect_ratio: 1.6
 
 tracker:
   type: BYTETracker
   track_thresh: 0.2
   track_buffer: 30
   match_thresh: 0.8
-  mot20: False 
+  mot20: False
 
-  
 detector:
-  model_name: 'yolo11n.pt'
-  confidence: 0.3
+  # model_name: 'yolo11n.pt'
+  model_name: 'E:/DL_SW/VisionSuite/runs/detect/train8/weights/best.pt'
+  confidence: 0.25
   iou: 0.5
-  width: 1920
-  height: 1080
+  # width: 1920
+  # height: 1080
+  width:  640
+  height: 640

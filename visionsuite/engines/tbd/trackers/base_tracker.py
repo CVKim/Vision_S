@@ -98,9 +98,7 @@ class BaseTracker:
             image = image_path_or_array
         else:
             raise TypeError(f"Input must be a file path (str) or an image (numpy.ndarray), but got {type(image_path_or_array)}")
-        # --- 로직 수정 끝 ---
 
-        # 이하 코드는 동일합니다.
         dets_results = self._detector(image, verbose=False,
                                     conf=self.config['detector']['confidence'],
                                     iou=self.config['detector']['iou'],
@@ -120,7 +118,7 @@ class BaseTracker:
         ids = []
         scores = []
         for track in tracked_stracks:
-            if not track.is_activated(): continue
+            if not track.is_activated: continue
             tlwhs.append(track.tlwh)
             ids.append(track.track_id)
             scores.append(track.score)
@@ -162,4 +160,3 @@ class BaseTracker:
                     scores.append(t.score)
                     
         return [x1y1whs, track_ids, scores]
-                

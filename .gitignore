@@ -174,3 +174,10 @@ pnnx*
 
 # hydra
 outputs/
+
+
+# Images
+*.bmp
+*.jpg
+*.jpeg
+*.png
